@@ -49,7 +49,7 @@ class JokesAPI:
     class _UpdateJeer(Resource):
         def put(self, id):
             addJokeBooHoo(id)
-            return jsonify(getJoke(id))
+            return jsonify(getJoke(id)) 
 
     # building RESTapi resources/interfaces, these routes are added to Web Server
     api.add_resource(_Create, '/create/<string:joke>')
