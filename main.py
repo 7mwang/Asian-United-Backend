@@ -39,7 +39,9 @@ def page_not_found(e):
 @app.route('/')  # connects default URL to index() function
 def index():
     return render_template("index.html")
-
+@app.route('/cookie')
+def cookie():
+    return render_template("CookieClicker.html")
 @app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")

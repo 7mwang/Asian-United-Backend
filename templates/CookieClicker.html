@@ -1,0 +1,89 @@
+<html>
+<head>
+<link rel="stylesheet" href="cookiestyle.css">
+</head>
+<script>
+var count = 0;
+var rate = 1;
+var cost = 100;
+var clickerCost = 1000;
+var clickerCount = 0;
+var plusCount = 0;
+async function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+   }
+async function clickers() {
+    while (true) {
+        await sleep(1000);
+        console.log("working")
+        count = count + (rate*clickerCount);
+        document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
+    }   
+}
+function addGen(){
+    if (count >= cost){
+        count = count 
+        cost +=100
+        plusCount +=1
+        rate +=1
+        document.getElementById("xplusCount").innerHTML = "x" + plusCount;
+        document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
+        document.getElementById("newCost").innerHTML = "Next increase: " + cost;
+    }
+    
+    else {
+        document.getElementById("buy1").animate(
+            [
+                { background: '#ff0000'}
+            ] , {
+                duration: 20
+            }
+        )
+    }
+    }
+function swapper(){
+    count = count + rate
+    document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
+}
+function buyClicker(){
+    if (count >= clickerCost){
+        count = count - clickerCost;
+        clickerCost +=1000;
+        clickerCount +=1;
+        document.getElementById("xclickerCount").innerHTML = "x" + clickerCount;
+        document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
+        document.getElementById("newClicker").innerHTML = "Next increase: " + clickerCost;
+    }
+    
+    else {
+        document.getElementById("buy2").animate(
+            [
+                { background: '#ff0000'}
+            ] , {
+                duration: 20
+            }
+        )
+    }
+}
+function  dev(){
+    count = 10000000000
+}
+
+clickers();
+</script>
+<body style = "height: 500vh">
+<center><p id = "cookieDisplay" class = "cookieDisplay">Hello! Click the cookie to get coins!</p></center>
+<img src="images/alex.png" onclick="swapper()" class = "cookie">
+<button onclick = "addGen()" id = "buy1"><img src = "images/plus.png" class = "icon"><p id = xplusCount></p></button>
+<p id = newCost></p>
+<p id = "costMsg"></p>
+<p>Increases your <br>coins' per click!</p>
+<button onclick = "buyClicker()" id = "buy2"><img src = "images/autoclicker.png" class = "icon"><p id = xclickerCount></p></button>
+<p id = "clickercostMsg"></p>
+<p id = "newClicker"></p>
+<p>Auto Clicker: <br>Clicks 1 time for you every second</p>
+<br><br>
+</body>
+<br><br>
+<button onclick = "dev()">dev butotn</button>
+</html>     
