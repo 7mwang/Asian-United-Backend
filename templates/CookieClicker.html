@@ -1,4 +1,5 @@
 <html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
 <link rel="stylesheet" href="/static/cookiestyle.css">  
 </head>
@@ -86,4 +87,66 @@ clickers();
 </body>
 <br><br>
 <button onclick = "dev()">dev butotn</button>
+<center><p id = "joke" class = "joke"></p></center>
 </html>     
+
+
+</html>
+
+<script>
+  // Define the API URL
+  const apiUrl = 'http://127.0.0.1:8640/api/jokes'; // Update this URL to match your server's address
+
+  const fetchedJokes = [];
+  const maxJokes = 10; // Number of jokes to fetch initially
+
+  // Function to fetch a fixed number of jokes and store them
+  async function fetchInitialJokes() {
+    for (let i = 0; i < maxJokes; i++) {
+      const randomJoke = await fetchRandomJoke();
+      fetchedJokes.push(randomJoke);
+    }
+  }
+
+  // Function to fetch a random joke
+  async function fetchRandomJoke() {
+    try {
+      const response = await fetch(apiUrl + '/random');
+      if (response.ok) {
+        const randomJoke = await response.json();
+        return randomJoke;
+      } else {
+        console.error('Request failed with status:', response.status);
+        return 'Failed to fetch a joke'; // Return an error message
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      return 'Error fetching a joke'; // Return an error message
+    }
+  }
+
+  async function updateJokeElement() {
+    const jokeElement = document.getElementById("joke");
+
+    if (fetchedJokes.length === 0) {
+      // Refill the array if it's empty
+      await fetchInitialJokes();
+    }
+
+    // Get and display the next joke from the array
+    const randomJoke = fetchedJokes.shift();
+    jokeElement.innerHTML = randomJoke;
+  }
+
+  // Function to fetch and update the joke element in a loop
+  async function loopJoke() {
+    while (true) {
+      await updateJokeElement();
+      await sleep(3000); // Sleep for 3 seconds (adjust the delay as needed)
+    }
+  }
+
+  // Call the function to update the joke element after a brief delay
+  setTimeout(updateJokeElement, 0);
+  loopJoke();
+</script>

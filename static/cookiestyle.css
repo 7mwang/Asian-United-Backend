@@ -20,6 +20,10 @@
         transform: rotate(359deg);
     }
 }
+.joke {
+    background-color: #f5f5f5;
+    padding: 18px
+}
 .cookie:active {
     display: block;
     display: block;
