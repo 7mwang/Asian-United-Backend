@@ -1,6 +1,6 @@
 <html>
 <head>
-<link rel="stylesheet" href="cookiestyle.css">
+<link rel="stylesheet" href="/static/cookiestyle.css">  
 </head>
 <script>
 var count = 0;
@@ -73,12 +73,12 @@ clickers();
 </script>
 <body style = "height: 500vh">
 <center><p id = "cookieDisplay" class = "cookieDisplay">Hello! Click the cookie to get coins!</p></center>
-<img src="images/alex.png" onclick="swapper()" class = "cookie">
-<button onclick = "addGen()" id = "buy1"><img src = "images/plus.png" class = "icon"><p id = xplusCount></p></button>
+<img src="/static/assets/alex.png" onclick="swapper()" class = "cookie">
+<button onclick = "addGen()" id = "buy1"><img src = "/static/assets/plus.png" class = "icon"><p id = xplusCount></p></button>
 <p id = newCost></p>
 <p id = "costMsg"></p>
 <p>Increases your <br>coins' per click!</p>
-<button onclick = "buyClicker()" id = "buy2"><img src = "images/autoclicker.png" class = "icon"><p id = xclickerCount></p></button>
+<button onclick = "buyClicker()" id = "buy2"><img src = "/static/assets/autoclicker.png" class = "icon"><p id = xclickerCount></p></button>
 <p id = "clickercostMsg"></p>
 <p id = "newClicker"></p>
 <p>Auto Clicker: <br>Clicks 1 time for you every second</p>
