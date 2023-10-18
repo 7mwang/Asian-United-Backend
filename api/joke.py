@@ -62,7 +62,7 @@ class JokesAPI:
     
 if __name__ == "__main__": 
     #server = "http://127.0.0.1:8640" # run local
-    server = 'https://flask.nighthawkcodingsociety.com' # run from web
+    server = 'https://asianunited.stu.nighthawkcodingsociety.com' # run from web
     url = server + "/api/jokes"
     responses = []  # responses list
 
