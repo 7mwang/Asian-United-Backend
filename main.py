@@ -40,10 +40,13 @@ def index():
     return render_template("index.html")
 @app.route('/cookie')
 def cookie():
-    return render_template("CookieClicker.html")
+    return render_template("/games/CookieClicker.html")
 @app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
+@app.route('/binary/')
+def binary():
+    return render_template("/games/binary_game.html")
 @app.before_first_request
 def activate_job():  # activate these items 
     initUsers()
