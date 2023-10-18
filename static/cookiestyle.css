@@ -10,7 +10,8 @@
 }
 .cookieDisplay{
     background-color: #f5f5f5; 
-    padding: 18px
+    padding: 18px;
+    font-size: larger
 }
 @keyframes rotation {
     from {
@@ -20,9 +21,16 @@
         transform: rotate(359deg);
     }
 }
+.gacha {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin-left: 50px
+}
 .joke {
     background-color: #f5f5f5;
-    padding: 18px
+    padding: 18px;
+    font-size: larger
 }
 .cookie:active {
     display: block;

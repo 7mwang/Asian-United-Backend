@@ -16,14 +16,13 @@ async function sleep(ms) {
 async function clickers() {
     while (true) {
         await sleep(1000);
-        console.log("working")
         count = count + (rate*clickerCount);
         document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
     }   
 }
 function addGen(){
     if (count >= cost){
-        count = count 
+        count = count - cost
         cost +=100
         plusCount +=1
         rate +=1
@@ -69,7 +68,61 @@ function buyClicker(){
 function  dev(){
     count = 10000000000
 }
+var rolls = ["Rate Up", "Auto Clicker", "idk upgrade", "ALEX DOLLAR"];
+var rollCount = []
 
+async function gacha(){
+  var rateaddCount = 0
+  var acCount = 0
+  var xupgradeCount = 0
+  var alexCount = 0
+  if (count >= 100000) {
+    rollCount = []
+    count = count - 100000
+    var i = 1;
+    document.getElementById("rolls").innerHTML = "You got...<br>"
+    while (i <= 10) {
+      roll = (Math.floor(Math.random()*100))
+      console.log(roll)
+      if (roll < 60) {
+        rollCount.push(rolls[0]);
+      }
+      else if (roll >= 60 && roll <= 90){
+        rollCount.push(rolls[1]);
+      }
+      else if (roll > 90 && roll <= 98) {
+        rollCount.push(rolls[2]);
+      }
+      else if (roll == 99){
+        rollCount.push(rolls[3]);
+      }
+      await sleep(750);
+      document.getElementById("rolls").innerHTML += rollCount[i-1] + "<br>"
+      i++
+    }
+    console.log(rollCount)
+    for (var i = 0; i < rollCount.length; i++) {
+      if (rollCount[i] == "Rate Up") {
+        rateaddCount++
+      }
+      else if (rollCount[i] == "Auto Clicker") {
+        acCount++
+      }
+      else if (rollCount[i] == "idk upgrade") {
+        xupgradeCount++
+      }
+      else if (rollCount[i] == "ALEX DOLLAR") {
+        alexCount++
+      }
+    }
+    document.getElementById("rolls").innerHTML += "<br>You got " + rateaddCount + "x Rate Ups, " + acCount + "x Autoclickers, " + xupgradeCount + "x idk upgrades, and " + alexCount + " Alex Dollar!"  
+    rollCount = [""]
+  }
+  else {
+    document.getElementById("gachaButton").animate(
+    [{ background: '#ff0000'}] , {duration: 20})
+  }
+}
 clickers();
 </script>
 <body style = "height: 500vh">
@@ -88,6 +141,9 @@ clickers();
 <br><br>
 <button onclick = "dev()">dev butotn</button>
 <center><p id = "joke" class = "joke"></p></center>
+<br><br><br><br>
+<center><button onclick = "gacha()" id = "gachaButton" class = "gachaButton"><img src = "/static/assets/alexgacha.jpg" class = "gacha"><center><strong><p style = "color: red; font-size: large; padding: 18px" >Cost: 100,000 Alex Coins</p></strong></center></button>
+<p id = rolls></p></center>
 </html>     
 
 
@@ -109,7 +165,7 @@ clickers();
   }
 
   // Function to fetch a random joke
-  async function fetchRandomJoke() {
+  async function fetchRandomJoke() {  
     try {
       const response = await fetch(apiUrl + '/random');
       if (response.ok) {
@@ -142,7 +198,7 @@ clickers();
   async function loopJoke() {
     while (true) {
       await updateJokeElement();
-      await sleep(3000); // Sleep for 3 seconds (adjust the delay as needed)
+      await sleep(30000); // Sleep for 3 seconds (adjust the delay as needed)
     }
   }
 

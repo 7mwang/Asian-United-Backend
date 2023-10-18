@@ -7,6 +7,9 @@ joke_list = [
     "今天是星期五！！！",
     "Chicken Butt.",
     "You should love yourself NOW.",
+    "Your life has ALL PURPOSE.",
+    "🐥",
+    ""
 ]
 # Return all jokes from jokes_data
 def getJokes():
