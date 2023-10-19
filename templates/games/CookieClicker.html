@@ -70,57 +70,93 @@ function  dev(){
 }
 var rolls = ["Rate Up", "Auto Clicker", "idk upgrade", "ALEX DOLLAR"];
 var rollCount = []
+var rolling = false;
+async function gacha() {
+  if (!rolling) { // Check if a roll is in progress
+    rolling = true; // Set the flag to true
 
-async function gacha(){
-  var rateaddCount = 0
-  var acCount = 0
-  var xupgradeCount = 0
-  var alexCount = 0
-  if (count >= 100000) {
-    rollCount = []
-    count = count - 100000
-    var i = 1;
-    document.getElementById("rolls").innerHTML = "You got...<br>"
-    while (i <= 10) {
-      roll = (Math.floor(Math.random()*100))
-      console.log(roll)
-      if (roll < 60) {
-        rollCount.push(rolls[0]);
+    var rateaddCount = 0;
+    var acCount = 0;
+    var xupgradeCount = 0;
+    var alexCount = 0;
+
+    if (count >= 100000) {
+      rollCount = [];
+      count = count - 100000;
+      var i = 1;
+      document.getElementById("rolls").innerHTML = "You got...<br>";
+
+      while (i <= 10) {
+        var roll = Math.floor(Math.random() * 100);
+        console.log(roll);
+
+        if (roll < 60) {
+          rollCount.push(rolls[0]);
+        } else if (roll >= 60 && roll <= 90) {
+          rollCount.push(rolls[1]);
+        } else if (roll > 90 && roll <= 98) {
+          rollCount.push(rolls[2]);
+        } else if (roll == 99) {
+          rollCount.push(rolls[3]);
+          disableScroll();
+          document.getElementById("alexdollar").scrollIntoView({behavior: 'smooth'});
+          await sleep (500);
+          document.getElementById("anim").animate([
+            { opacity: 0 }, // 0% keyframe
+            { opacity: 0.5 }, // 50% keyframe
+            { opacity: 1 },
+            { opacity: 1 },
+            { opacity: 1 },], // 99% keyframe
+            {duration: 3000,});
+          await sleep(3000);
+          document.getElementById("gachaSec").scrollIntoView({behavior: 'smooth'});
+          enableScroll();
+        }
+
+        //await sleep(750);
+        document.getElementById("rolls").innerHTML += rollCount[i - 1] + "<br>";
+        i++;
       }
-      else if (roll >= 60 && roll <= 90){
-        rollCount.push(rolls[1]);
+
+      console.log(rollCount);
+
+      for (var i = 0; i < rollCount.length; i++) {
+        if (rollCount[i] == "Rate Up") {
+          rateaddCount++;
+        } else if (rollCount[i] == "Auto Clicker") {
+          acCount++;
+        } else if (rollCount[i] == "idk upgrade") {
+          xupgradeCount++;
+        } else if (rollCount[i] == "ALEX DOLLAR") {
+          alexCount++;
+        }
       }
-      else if (roll > 90 && roll <= 98) {
-        rollCount.push(rolls[2]);
-      }
-      else if (roll == 99){
-        rollCount.push(rolls[3]);
-      }
-      await sleep(750);
-      document.getElementById("rolls").innerHTML += rollCount[i-1] + "<br>"
-      i++
+
+      document.getElementById("rolls").innerHTML +=
+        "<br>You got " +
+        rateaddCount +
+        "x Rate Ups, " +
+        acCount +
+        "x Autoclickers, " +
+        xupgradeCount +
+        "x idk upgrades, and " +
+        alexCount +
+        " Alex Dollar!";
+
+      clickerCount = clickerCount + acCount;
+      rate = rate + rateaddCount;
+      plusCount = plusCount + rateaddCount;
+      document.getElementById("xplusCount").innerHTML = "x" + plusCount;
+      document.getElementById("xclickerCount").innerHTML = "x" + clickerCount;
+      rollCount = [""];
+    } else {
+      document.getElementById("gachaButton").animate(
+        [{ background: "#ff0000" }],
+        { duration: 20 }
+      );
     }
-    console.log(rollCount)
-    for (var i = 0; i < rollCount.length; i++) {
-      if (rollCount[i] == "Rate Up") {
-        rateaddCount++
-      }
-      else if (rollCount[i] == "Auto Clicker") {
-        acCount++
-      }
-      else if (rollCount[i] == "idk upgrade") {
-        xupgradeCount++
-      }
-      else if (rollCount[i] == "ALEX DOLLAR") {
-        alexCount++
-      }
-    }
-    document.getElementById("rolls").innerHTML += "<br>You got " + rateaddCount + "x Rate Ups, " + acCount + "x Autoclickers, " + xupgradeCount + "x idk upgrades, and " + alexCount + " Alex Dollar!";
-    rollCount = [""]
-  }
-  else {
-    document.getElementById("gachaButton").animate(
-    [{ background: '#ff0000'}] , {duration: 20})
+
+    rolling = false; // Reset the flag when the roll is complete
   }
 }
 clickers();
@@ -140,16 +176,57 @@ clickers();
 </body>
 <br><br>
 <button onclick = "dev()">dev butotn</button>
-<center><p id = "joke" class = "joke"></p></center>
+<center><p id = "joke" class = "joke"></p></center><section id = gachaSec></section>
 <br><br><br><br>
 <center><button onclick = "gacha()" id = "gachaButton" class = "gachaButton"><img src = "/static/assets/alexgacha.jpg" class = "gacha"><center><strong><p style = "color: red; font-size: large; padding: 18px" >Cost: 100,000 Alex Coins</p></strong></center></button>
-<p id = rolls></p></center>
+<p id = rolls></p>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><section id = "alexdollar"></section><br><br><br><br><br><br><br><br><br><br>
+<img src = "/static/assets/alexdollar.png" style = "position: relative" id = "anim" class = "anim"></center>
 </html>     
 
 
 </html>
 
 <script>
+  var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+  e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+  if (keys[e.keyCode]) {
+    preventDefault(e);
+    return false;
+  }
+}
+
+// modern Chrome requires { passive: false } when adding event
+var supportsPassive = false;
+try {
+  window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+    get: function () { supportsPassive = true; } 
+  }));
+} catch(e) {}
+
+var wheelOpt = supportsPassive ? { passive: false } : false;
+var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+// call this to Disable
+function disableScroll() {
+  window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+  window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+  window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+  window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+}
+
+// call this to Enable
+function enableScroll() {
+  window.removeEventListener('DOMMouseScroll', preventDefault, false);
+  window.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
+  window.removeEventListener('touchmove', preventDefault, wheelOpt);
+  window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+}
   // Define the API URL
   const apiUrl = 'https://asianunited.stu.nighthawkcodingsociety.com/api/jokes'; 
 
