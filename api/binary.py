@@ -1,13 +1,15 @@
-from flask import Flask, jsonify
+from flask import Blueprint, Flask, app, jsonify
 import random
 
+from py import apipkg
+
 binary_api = Blueprint('binary_api', __name__,
-                       url_prefix = '/binary')
+                       url_prefix = '/api/binary')
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
-api = Api(binary_api)
+api = apipkg(binary_api)
 
-@app.route('/binary', methods=['GET'])
+@app.route('/api/binary', methods=['GET'])
 def randomBinary ():
     #Generate a random integer
     randomNumber = random.randint(0,32)

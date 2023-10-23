@@ -2,16 +2,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const randomNumberElement = document.getElementById("randomNumber");
     const binaryRepresentationElement = document.getElementById("binaryRepresentation");
 
-    fetch("/api/players/binary")
+    fetch("/api/players/random-binary")
         .then((response) => response.json())
         .then((data) => {
-            randomNumberElement.textContent = `Random number: ${data.random_number}`;
-            binaryRepresentationElement.int = `Binary representation: ${data.binary_representation}`;
+            const random_number = data.random_number;
+            const binary_representation = data.binary_representation;
+
+            // Update your HTML elements with the retrieved data
+            randomNumberElement.textContent = `Random number: ${random_number}`;
+            binaryRepresentationElement.textContent = `Binary representation: ${binary_representation}`;
         })
         .catch((error) => console.error("Error fetching data:", error));
-});
 
-var score = 0;
+        var score = 0
     
         // Store the original innerHTML and styles of each button
         var originalText1 = document.getElementById("b1").innerHTML;
