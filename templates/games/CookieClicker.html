@@ -97,7 +97,7 @@ function buyClicker(){
         document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
         document.getElementById("newClicker").innerHTML = "Next increase: " + clickerCost;
     }
-    
+  
     else {
         document.getElementById("buy2").animate(
             [
@@ -107,10 +107,21 @@ function buyClicker(){
             }
         )
     }
+  }
+  function build() {
+  let matList = [];
+  let buildList = ["top", "mid", "bot"];
+  
+  for (let i = 0; i < buildList.length; i++) {
+    matList[i] = (i + 1) * 20;
+  }
+  console.log(matList);
 }
+
+
 function  dev(){
     count = 10000000000
-}
+}   
 var rolls = ["Rate Up", "Auto Clicker", "Doubler", "ALEX DOLLAR"];
 var rollCount = []
 var rolling = false;
@@ -187,6 +198,9 @@ async function gacha() {
       clickerCount = clickerCount + acCount;
       rate = rate + rateaddCount;
       plusCount = plusCount + rateaddCount;
+      doubleCount = doubleCount + dbCount/20
+      //console.log(doubleCount)
+      document.getElementById("xdbCount").innerHTML = "x" + Number((doubleCount*20).toFixed(0));
       document.getElementById("xplusCount").innerHTML = "x" + plusCount;
       document.getElementById("xclickerCount").innerHTML = "x" + clickerCount;
       rollCount = [""];
