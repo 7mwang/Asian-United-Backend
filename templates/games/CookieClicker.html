@@ -17,7 +17,7 @@ async function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
    }
 function dbChance() { 
-  if (count >= dbCost && doubleCount <= 5){
+  if (count >= dbCost && doubleCount < 4.999){
     count = count - dbCost
     dbCost +=1500
     doubleCount += 0.05
@@ -214,9 +214,8 @@ clickers();
 <button onclick = "buyClicker()" id = "buy2"><img src = "/static/assets/autoclicker.png" class = "icon"><p id = xclickerCount></p></button>
 <p id = "clickercostMsg"></p>
 <p id = "newClicker"></p>
-<button onclick = "dbChance()" id = "buy3"><img src = "/static/assets/double.jpg" class = "icon"></button>
+<button onclick = "dbChance()" id = "buy3"><img src = "/static/assets/double.jpg" class = "icon"><p id = "xdbCount"></p></button>
 <p id = newdbCost></p>
-<p id = xdbCount></p>
 <p>Auto Clicker: <br>Clicks 1 time for you every second</p>
 <br><br>
 </body>
