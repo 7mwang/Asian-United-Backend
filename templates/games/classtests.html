@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .button {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<script>
+    class Button {
+        constructor(id, cost, click) {
+            this.id = id;
+            this.cost = cost;
+            this.click = click;
+        }
+
+        createButton() {
+            const button = document.createElement('button');
+            button.id = this.id;
+            button.className = 'button';
+            button.innerHTML = `
+                <img src="/static/assets/${this.id}.png" class="icon">
+                <p id="x${this.id}Count">0</p>
+            `;
+            button.addEventListener('click', this.click);
+            return button;
+        }
+    }
+
+    // Define your buttons
+    const buttons = [
+        new Button('plus', 100, addGen), // Make sure addGen is defined
+        // Add more buttons here as needed
+    ];
+function addGen(){
+    count +=1
+}
+
+    var count = 0;
+    var rate = 1;
+    var clickerCost = 1000;
+    var clickerCount = 0;
+    var plusCount = 0;
+
+    // Rest of your code...
+
+    // Function to create and append buttons to the DOM
+    function createButtons() {
+        const buttonContainer = document.getElementById('buttonContainer');
+        buttons.forEach(button => {
+            const buttonElement = button.createButton();
+            buttonContainer.appendChild(buttonElement);
+        });
+    }
+
+    // Call the createButtons function to create and append the buttons
+    createButtons();    
+</script>
+
+<body style="height: 500vh">
+    <center>
+        <p id="cookieDisplay" class="cookieDisplay">Hello! Click the cookie to get coins!</p>
+    </center>
+    <div id="buttonContainer"></div>
+    <p id="newCost"></p>
+    <p id="costMsg"></p>
+    <p>Increases your <br>coins' per click!</p>
+    <br><br>
+</body>
+
+<!-- Rest of your HTML and script... -->
+
+</html>

@@ -49,6 +49,10 @@ button {
     display: inline-block;
     border-radius: 5px;
 }
+.button {
+    display: flex;
+    align-items: center;
+}
 .icon {
     display: block;
     max-height: 60px

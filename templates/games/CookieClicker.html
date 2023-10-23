@@ -9,16 +9,59 @@ var rate = 1;
 var cost = 100;
 var clickerCost = 1000;
 var clickerCount = 0;
+var doubleCount = 0;
+var dbCost = 1500;
 var plusCount = 0;
+var twoDouble = 0;
 async function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
    }
+function dbChance() { 
+  if (count >= dbCost && doubleCount <= 5){
+    count = count - dbCost
+    dbCost +=1500
+    doubleCount += 0.05
+    //console.log(Number(doubleCount.toFixed(0)))
+    document.getElementById("xdbCount").innerHTML = "x" + Number((doubleCount*20).toFixed(0));
+    document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
+    document.getElementById("newdbCost").innerHTML = "Next Increase: " + dbCost;
+  }
+  else {
+        document.getElementById("buy3").animate(
+            [
+                { background: '#ff0000'}
+            ] , {
+                duration: 20
+            }
+        )
+    }
+}
 async function clickers() {
     while (true) {
         await sleep(1000);
-        count = count + (rate*clickerCount);
-        document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins";
-    }   
+        if(probability(doubleCount)) {
+          multi = 2;
+
+          if (probability(doubleCount-1)) {
+            multi = 3
+            if (probability(doubleCount-2)) { // 25% chance for quadruple drops
+            multi = 4;
+            if (probability(doubleCount-3)) { // 25% chance for quadruple drops
+              multi = 5;
+              }
+              if (probability(doubleCount-4)) { // 25% chance for quadruple drops
+                multi = 6;
+            }
+            }
+          }
+        }
+        else { multi = 1}
+        count = count + (rate*clickerCount*multi);
+        document.getElementById("cookieDisplay").innerHTML = count + " Alex Coins"   
+  }
+}
+var probability = function(n) {
+     return !!n && Math.random() <= n;
 }
 function addGen(){
     if (count >= cost){
@@ -68,16 +111,15 @@ function buyClicker(){
 function  dev(){
     count = 10000000000
 }
-var rolls = ["Rate Up", "Auto Clicker", "idk upgrade", "ALEX DOLLAR"];
+var rolls = ["Rate Up", "Auto Clicker", "Doubler", "ALEX DOLLAR"];
 var rollCount = []
 var rolling = false;
 async function gacha() {
   if (!rolling) { // Check if a roll is in progress
-    rolling = true; // Set the flag to true
-
+    rolling = true;
     var rateaddCount = 0;
     var acCount = 0;
-    var xupgradeCount = 0;
+    var dbCount = 0;
     var alexCount = 0;
 
     if (count >= 100000) {
@@ -98,6 +140,23 @@ async function gacha() {
           rollCount.push(rolls[2]);
         } else if (roll == 99) {
           rollCount.push(rolls[3]);
+        } 
+        await sleep(75);
+        document.getElementById("rolls").innerHTML += rollCount[i - 1] + "<br>";
+        i++;
+      }
+
+      console.log(rollCount);
+
+      for (var i = 0; i < rollCount.length; i++) {
+        if (rollCount[i] == "Rate Up") {
+          rateaddCount++;
+        } else if (rollCount[i] == "Auto Clicker") {
+          acCount++;
+        } else if (rollCount[i] == "Doubler") {
+          dbCount++;
+        } else if (rollCount[i] == "ALEX DOLLAR") {
+          alexCount++;
           disableScroll();
           document.getElementById("alexdollar").scrollIntoView({behavior: 'smooth'});
           await sleep (500);
@@ -112,24 +171,6 @@ async function gacha() {
           document.getElementById("gachaSec").scrollIntoView({behavior: 'smooth'});
           enableScroll();
         }
-
-        //await sleep(750);
-        document.getElementById("rolls").innerHTML += rollCount[i - 1] + "<br>";
-        i++;
-      }
-
-      console.log(rollCount);
-
-      for (var i = 0; i < rollCount.length; i++) {
-        if (rollCount[i] == "Rate Up") {
-          rateaddCount++;
-        } else if (rollCount[i] == "Auto Clicker") {
-          acCount++;
-        } else if (rollCount[i] == "idk upgrade") {
-          xupgradeCount++;
-        } else if (rollCount[i] == "ALEX DOLLAR") {
-          alexCount++;
-        }
       }
 
       document.getElementById("rolls").innerHTML +=
@@ -138,8 +179,8 @@ async function gacha() {
         "x Rate Ups, " +
         acCount +
         "x Autoclickers, " +
-        xupgradeCount +
-        "x idk upgrades, and " +
+        dbCount +
+        "x Doublers, and " +
         alexCount +
         " Alex Dollar!";
 
@@ -149,6 +190,8 @@ async function gacha() {
       document.getElementById("xplusCount").innerHTML = "x" + plusCount;
       document.getElementById("xclickerCount").innerHTML = "x" + clickerCount;
       rollCount = [""];
+      await sleep (500)
+      rolling = false;
     } else {
       document.getElementById("gachaButton").animate(
         [{ background: "#ff0000" }],
@@ -156,7 +199,7 @@ async function gacha() {
       );
     }
 
-    rolling = false; // Reset the flag when the roll is complete
+     // Reset the flag when the roll is complete
   }
 }
 clickers();
@@ -171,6 +214,9 @@ clickers();
 <button onclick = "buyClicker()" id = "buy2"><img src = "/static/assets/autoclicker.png" class = "icon"><p id = xclickerCount></p></button>
 <p id = "clickercostMsg"></p>
 <p id = "newClicker"></p>
+<button onclick = "dbChance()" id = "buy3"><img src = "/static/assets/double.jpg" class = "icon"></button>
+<p id = newdbCost></p>
+<p id = xdbCount></p>
 <p>Auto Clicker: <br>Clicks 1 time for you every second</p>
 <br><br>
 </body>
