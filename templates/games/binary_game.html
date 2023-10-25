@@ -80,14 +80,16 @@
     }
 
     function moveon() {
+        var number = document.getElementById("randomNumber")
         document.getElementById("b0").innerHTML = "0"
         document.getElementById("b1").innerHTML = "0"
         document.getElementById("b2").innerHTML = "0"
         document.getElementById("b3").innerHTML = "0"
         document.getElementById("b4").innerHTML = "0"
         document.getElementById("b5").innerHTML = "0"
+        document.getElementById("para").innerHTML = "";
         randNumber = randnum()
-        number.innerHTML = "Number " + randNmber
+        number.innerHTML = "Number " + randNumber
     }
 
     // Define a common function for changing button text and style
