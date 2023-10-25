@@ -9,7 +9,9 @@ joke_list = [
     "You should love yourself NOW.",
     "Your life has ALL PURPOSE.",
     "🐥",
-    ""
+    "🐧",
+    "Gabriel Zebra One?",
+    "Sunroof..."
 ]
 # Return all jokes from jokes_data
 def getJokes():
