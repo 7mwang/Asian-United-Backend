@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toggle Visibility</title>
+    <style>
+        #toggleElement {
+            display: none; /* Hide the element by default */
+        }
+        #lol {
+            display: none
+        }
+    </style>
+    <script>
+        function toggleVisibility() {
+            var element = document.getElementById("toggleElement");
+            var button = document.getElementById("toggleButton");
+            var button2 = document.getElementById("lol")
+                element.style.display = "block"; // Make it visible
+                button2.style.display = "block";
+                button.style.display = "none"; // Hide the button
+        }
+    </script>
+</head>
+<body>
+    <button id="toggleButton" onclick="toggleVisibility()">Toggle Visibility</button>
+    <p id="toggleElement">This is the text that will become visible when the button is clicked.</p>
+    <button id="lol">LOL</button>
+</body>
+</html>
+
+
+
+
+
+
