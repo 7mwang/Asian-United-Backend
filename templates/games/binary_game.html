@@ -10,6 +10,9 @@
         #check {
             display: none;
         }
+        #next {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -28,6 +31,7 @@
     </div>
     <br>
     <button id="check" onclick="check()">Check!</button>
+    <button id="next" onclick="moveon()">Next!</button>
     <p id="para"></p>
 </body>
 <script>
@@ -52,7 +56,7 @@
         var b0 = document.getElementById("b0");
         var sc = document.getElementById("score")
 
-        check.style.display = "block";
+        check.style.display = "inline-block";
         text.innerHTML = "Click the boxes to match the number in binary!";
         start.style.display = "none"; // Hide the "Start" button
         b5.style.display = "inline-block"
@@ -64,12 +68,26 @@
         randNumber = randnum()
         number.innerHTML = "Number: " + randNumber
         sc.innerHTML = "Score: " + score
+    }
 
+    function randbin(num) {
+        return (num >>> 0).toString(2);
     }
 
     function randnum() {
         number = Math.floor(Math.random() * 64);
         return number
+    }
+
+    function moveon() {
+        document.getElementById("b0").innerHTML = "0"
+        document.getElementById("b1").innerHTML = "0"
+        document.getElementById("b2").innerHTML = "0"
+        document.getElementById("b3").innerHTML = "0"
+        document.getElementById("b4").innerHTML = "0"
+        document.getElementById("b5").innerHTML = "0"
+        randNumber = randnum()
+        number.innerHTML = "Number " + randNmber
     }
 
     // Define a common function for changing button text and style
@@ -134,8 +152,13 @@
         }
 
         if (value === randNumber) {
+            var next = document.getElementById("next")
+            next.style.display = "inline-block"
             document.getElementById("para").innerHTML = "Correct!";
             score += 1
+            sc.innerHTML = "Score: " + score
+
+
         } else {
             document.getElementById("para").innerHTML = "Incorrect! Try again.";
             document.getElementById("b0").innerHTML = "0"
