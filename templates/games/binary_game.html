@@ -3,9 +3,14 @@
 <head>
     <title>Binary Game</title>
     <style>
-        /* Add CSS styles to display buttons side by side */
+        /*Buttons beside start don't appear until start is clicked*/
         .binary-button {
-            display: none
+            display: none;
+            margin: 0 auto;
+            text-align: center;
+            width: 100px; /* Set the width of the buttons */
+            height: 40px; /* Set the height of the buttons */
+            font-size: 16px; /* Set the font size of the buttons */
         }
         #check {
             display: none;
@@ -13,14 +18,22 @@
         #next {
             display: none;
         }
+        #starting {
+            text-align: center;
+        }
+        .center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <h1>Binary Game</h1>
-    <p id="directions">Click start to begin!</p>
-    <p id="randomNumber"></p>
-    <button id="start" onclick="start()">Start!</button>
-    <p id="score"></p>
+    <h1 class="center">Binary Game</h1>
+    <p class="center" id="directions">Click start to begin!</p>
+    <p class="center" id="randomNumber"></p>
+    <div id="starting">
+        <button id="start" onclick="start()">Start!</button>
+    </div>
+    <p class="center" id="sc"></p>
     <div id="binary-buttons">
         <button class="binary-button" id="b5" onclick="c5()">0</button>
         <button class="binary-button" id="b4" onclick="c4()">0</button>
@@ -30,8 +43,8 @@
         <button class="binary-button" id="b0" onclick="c0()">0</button>
     </div>
     <br>
-    <button id="check" onclick="check()">Check!</button>
-    <button id="next" onclick="moveon()">Next!</button>
+    <button class="center" id="check" onclick="check()">Check!</button>
+    <button class="center" id="next" onclick="moveon()">Next!</button>
     <p id="para"></p>
 </body>
 <script>
@@ -44,6 +57,7 @@
 
 
     function start() {
+        var buttons = document.getElementById("binary-buttons")
         var start = document.getElementById("start");
         var check = document.getElementById("check");
         var text = document.getElementById("directions");
@@ -54,7 +68,7 @@
         var b2 = document.getElementById("b2");
         var b1 = document.getElementById("b1");
         var b0 = document.getElementById("b0");
-        var sc = document.getElementById("score")
+        var sc = document.getElementById("sc")
 
         check.style.display = "inline-block";
         text.innerHTML = "Click the boxes to match the number in binary!";
@@ -68,6 +82,7 @@
         randNumber = randnum()
         number.innerHTML = "Number: " + randNumber
         sc.innerHTML = "Score: " + score
+        buttons.style.display = "center"
     }
 
     function randbin(num) {
@@ -155,6 +170,7 @@
 
         if (value === randNumber) {
             var next = document.getElementById("next")
+            var sc = document.getElementById("sc")
             next.style.display = "inline-block"
             document.getElementById("para").innerHTML = "Correct!";
             score += 1

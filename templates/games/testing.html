@@ -6,8 +6,8 @@
         #toggleElement {
             display: none; /* Hide the element by default */
         }
-        #lol {
-            display: none
+        .oop {
+            text-align: center;
         }
     </style>
     <script>
@@ -18,13 +18,16 @@
                 element.style.display = "block"; // Make it visible
                 button2.style.display = "block";
                 button.style.display = "none"; // Hide the button
+                button2.style.textAlign = "center"
         }
     </script>
 </head>
 <body>
     <button id="toggleButton" onclick="toggleVisibility()">Toggle Visibility</button>
     <p id="toggleElement">This is the text that will become visible when the button is clicked.</p>
+    <div class="oop">
     <button id="lol">LOL</button>
+    </div>
 </body>
 </html>
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .centered-button {
+            display: none;
+            margin: 0 auto; /* Center horizontally */
+            text-align: center;
+        }
+    </style>
+    <script>
+        function toggleVisibility() {
+            var button = document.getElementById("toggleButton");
+            var button2 = document.getElementById("lol");
+            
+            if (button2.style.display === "none") {
+                button2.style.display = "block";
+                button.style.display = "none";
+            } else {
+                button2.style.display = "none";
+                button.style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <button id="toggleButton" onclick="toggleVisibility()">Toggle</button>
+    <button id="lol" class="centered-button">Button 2</button>
+</body>
+</html>
