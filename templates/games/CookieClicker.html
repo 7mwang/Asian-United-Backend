@@ -341,4 +341,54 @@ function enableScroll() {
   // Call the function to update the joke element after a brief delay
   setTimeout(updateJokeElement, 0);
   loopJoke();
+  function sendScoreToAPI() {
+  const scoreData = {
+    score: count, // Your game score
+  };
+
+  fetch('http://127.0.0.1:8640/api/scores', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(scoreData),
+  })
+    .then(response => {
+      if (response.ok) {
+        // Score sent successfully
+        console.log('Score sent to the API');
+      } else {
+        // Handle error
+        console.error('Failed to send score to the API');
+      }
+    })
+    .catch(error => {
+      // Handle network error
+      console.error('Network error while sending score to the API');
+    });
+}
+function retrieveScoreFromAPI() {
+  fetch('http://127.0.0.1:8640/api/scores', {
+    method: 'GET',
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json(); // Parse the response as JSON
+      } else {
+        // Handle error
+        console.error('Failed to retrieve score data from the API');
+      }
+    })
+    .then(data => {
+      // Use the retrieved score data (e.g., update the game UI)
+      const retrievedScores = data.scores;
+      console.log('Retrieved scores:', retrievedScores);
+      // Update your game's UI or logic with the retrieved score data
+    })
+    .catch(error => {
+      // Handle network error
+      console.error('Network error while retrieving score data from the API');
+    });
+}
+
 </script>
