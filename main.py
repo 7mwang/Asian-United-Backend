@@ -10,13 +10,12 @@ from model.players import initPlayers
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-
 # setup APIs
 from api.covid import covid_api # Blueprint import api definition
 from api.joke import joke_api # Blueprint import api definition
 from api.user import user_api # Blueprint import api definition
 from api.player import player_api
-
+from api.score import score_api
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -26,6 +25,7 @@ from projects.projects import app_projects # Blueprint directory import projects
 db.init_app(app)
 
 # register URIs
+app.register_blueprint(score_api)
 app.register_blueprint(joke_api) # register api routes
 app.register_blueprint(covid_api) # register api routes
 app.register_blueprint(user_api) # register api routes
