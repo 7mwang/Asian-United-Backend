@@ -48,4 +48,4 @@ class UserDataAPI(Resource):
         return jsonify(message='User data stored successfully'), 201
 
 
-api.add_resource(UserDataAPI, '/users/<string:user_id>')
+api.add_resource(UserDataAPI, '/users/<string:user_id>/')
