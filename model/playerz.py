@@ -7,14 +7,14 @@ class CookieClicker(db.Model):
     #Define Class Schema
     id = db.Column(db.Integer, primary_key=True)
     playerID = db.Column(db.Integer, db.ForeignKey('players.id'), nullable=False)
-    cScore = db.Column(db.Integer, unique=False, nullable=False)
-    cCost = db.Column(db.Integer, unique=False, nullable=False)
-    cCount = db.Column(db.Integer, unique=False, nullable=False)
-    dbCost = db.Column(db.Integer, unique=False, nullable=False)
-    dbCount = db.Column(db.Integer, unique=False, nullable=False)
-    pCount = db.Column(db.Integer, unique=False, nullable=False)
-    rCost = db.Column(db.Integer, unique=False, nullable=False)
-    rate = db.Column(db.Integer, unique=False, nullable=False)
+    cScore = db.Column(db.Integer, unique=False)
+    cCost = db.Column(db.Integer, unique=False)
+    cCount = db.Column(db.Integer, unique=False)
+    dbCost = db.Column(db.Integer, unique=False)
+    dbCount = db.Column(db.Integer, unique=False)
+    pCount = db.Column(db.Integer, unique=False)
+    rCost = db.Column(db.Integer, unique=False)
+    rate = db.Column(db.Integer, unique=False)
 
     def __init__(self, id, ccScore, cCost, cCount, dbCost, dbCount, pCount, rCost, rate):
         self.playerID = id
@@ -88,7 +88,7 @@ class BinaryGame(db.Model):
     #Define Class Schema
     id = db.Column(db.Integer, primary_key=True)
     playerID = db.Column(db.Integer, db.ForeignKey('players.id'), nullable=False)
-    bScore = db.Column(db.Integer, unique=False, nullable=False)
+    bScore = db.Column(db.Integer, unique=False)
 
     def __init__(self, id, bScore):
         self.playerID = id
@@ -126,7 +126,7 @@ class GuessGame(db.Model):
     #Define Class Schema
     id = db.Column(db.Integer, primary_key=True)
     playerID = db.Column(db.Integer, db.ForeignKey('players.id'), nullable=False)
-    gScore = db.Column(db.Integer, unique=False, nullable=False)
+    gScore = db.Column(db.Integer, unique=False)
 
     def __init__(self, id, gScore):
         self.playerID = id
