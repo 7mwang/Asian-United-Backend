@@ -7,7 +7,7 @@ from flask import render_template  # import render_template from "public" flask 
 from __init__ import app,db  # Definitions initialization
 from model.users import initUsers
 from model.players import initPlayers
-
+from flask import Flask
 # setup APIs
 from api.covid import covid_api # Blueprint import api definition
 from api.joke import joke_api # Blueprint import api definition
@@ -23,6 +23,7 @@ from projects.projects import app_projects # Blueprint directory import projects
 db.init_app(app)
 
 # register URIs
+
 app.register_blueprint(score_api)
 app.register_blueprint(joke_api) # register api routes
 app.register_blueprint(covid_api) # register api routes
@@ -51,7 +52,12 @@ def binary():
 def activate_job():  # activate these items 
     initUsers()
     initPlayers()
-
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH')
+  return response
 # this runs the application on the development server
 if __name__ == "__main__":
     # change name for testing
