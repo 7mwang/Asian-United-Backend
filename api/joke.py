@@ -12,21 +12,6 @@ joke_api = Blueprint('joke_api', __name__,
 api = Api(joke_api)
 
 class JokesAPI:
-    # not implemented
-    class _Create(Resource):
-        def post(self, joke):
-            pass
-            
-    # getJokes()
-    class _Read(Resource):
-        def get(self):
-            return jsonify(getJokes())
-
-    # getJoke(id)
-    class _ReadID(Resource):
-        def get(self, id):
-            return jsonify(getJoke(id))
-
     # getRandomJoke()
     class _ReadRandom(Resource):
         def get(self):
@@ -39,26 +24,10 @@ class JokesAPI:
             countMsg = {'count': count}
             return jsonify(countMsg)
 
-    # put method: addJokeHaHa
-    class _UpdateLike(Resource):
-        def put(self, id):
-            addJokeHaHa(id)
-            return jsonify(getJoke(id))
-
-    # put method: addJokeBooHoo
-    class _UpdateJeer(Resource):
-        def put(self, id):
-            addJokeBooHoo(id)
-            return jsonify(getJoke(id)) 
 
     # building RESTapi resources/interfaces, these routes are added to Web Server
-    api.add_resource(_Create, '/create/<string:joke>')
-    api.add_resource(_Read, '/')
-    api.add_resource(_ReadID, '/<int:id>')
     api.add_resource(_ReadRandom, '/random')
     api.add_resource(_ReadCount, '/count')
-    api.add_resource(_UpdateLike, '/like/<int:id>')
-    api.add_resource(_UpdateJeer, '/jeer/<int:id>')
     
 if __name__ == "__main__": 
     #server = "http://127.0.0.1:8640" # run local
@@ -75,15 +44,7 @@ if __name__ == "__main__":
     num = str(random.randint(0, count-1)) # test a random record
     responses.append(
         requests.get(url+"/"+num)  # read joke by id
-        ) 
-    responses.append(
-        requests.put(url+"/like/"+num) # add to like count
-        ) 
-    responses.append(
-        requests.put(url+"/jeer/"+num) # add to jeer count
-        ) 
-
-    # obtain a random joke
+    )
     responses.append(
         requests.get(url+"/random")  # read a random joke
         ) 
