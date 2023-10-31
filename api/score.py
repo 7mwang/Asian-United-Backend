@@ -31,7 +31,7 @@ class UserDataAPI(Resource):
         if user_id in user_data:
             return jsonify(user_data[user_id])
         else:
-            return jsonify(error='User data not found'), 404
+            return jsonify(error='User data nxot found'), 404
 
     def post(self, user_id):
         data = request.get_json()
