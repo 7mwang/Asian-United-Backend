@@ -108,7 +108,7 @@ class PlayerAPI:
             if player:
                 player.update(ccScore, cCost, cCount, dbCost, dbCount, pCount, rCost, rate)
             else:
-                return {'message': f"unable to find GPA entries of user '{username}'"}, 210     # error msg
+                return {'message': f"unable to find Cookie Clicker entries of user '{username}'"}, 210     # error msg
             return player.read()
     
     class _ScoreBiinary(Resource):
@@ -122,6 +122,66 @@ class PlayerAPI:
             players = Player.query.all()
             bhighscore = max(Player.bScore for player in players if player.bScore is not None)
             return bhighscore
+    
+    class _DeleteBinary(Resource):                     # This resource aims to delete a gpa row in the db
+        def delete(self):
+            body = request.get_json()               # We grab our body
+            username = body.get('username')         # Get the username of the user from the cookie, will process in frontend
+            player = binarygame_obj_by_username(username)
+            if player:                                # Check if user exists
+                player.delete()                       # call delete
+            else:                                   # if user does not exist
+                return {'message': f"unable to find Binary Game entries of user '{username}'"}, 210
+            return player.read()
+    
+    class _UpdateBinary(Resource):
+        def post(self):
+            body = request.get_json()
+            username = body.get(username)
+            bScore = int(body.get('bScore'))
+
+            player = binarygame_obj_by_username(username)
+            if player:
+                player.update(bScore)
+            else:
+                return {'message': f"unable to find Binary Game entries of user '{username}'"}, 210     # error msg
+            return player.read()
+    
+    class _ScoreGuess(Resource):
+        def get(self):
+            players = Player.query.all()
+            cscore = [Player.gScore for player in players]
+            return jsonify(cscore)
+    
+    class _HighScoreGuess(Resource):
+        def get(self):
+            players = Player.query.all()
+            ghighscore = max(Player.gScore for player in players if player.gScore is not None)
+            return ghighscore
+    
+    class _DeleteGuess(Resource):                     # This resource aims to delete a gpa row in the db
+        def delete(self):
+            body = request.get_json()               # We grab our body
+            username = body.get('username')         # Get the username of the user from the cookie, will process in frontend
+            player = guessgame_obj_by_username(username)
+            if player:                                # Check if user exists
+                player.delete()                       # call delete
+            else:                                   # if user does not exist
+                return {'message': f"unable to find Guess Game entries of user '{username}'"}, 210
+            return player.read()
+    
+    class _UpdateGuess(Resource):
+        def post(self):
+            body = request.get_json()
+            username = body.get(username)
+            gScore = int(body.get('gScore'))
+
+            player = guessgame_obj_by_username(username)
+            if player:
+                player.update(gScore)
+            else:
+                return {'message': f"unable to find Guess Game entries of user '{username}'"}, 210     # error msg
+            return player.read()
 
 
 
