@@ -12,7 +12,7 @@ user_data = {}
 
 class ScoreAPI(Resource):
     def get(self):
-        return jsonify(scores=game_scores)
+        return jsonify()
 
     def post(self):
         data = request.get_json()
