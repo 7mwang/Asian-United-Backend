@@ -139,8 +139,20 @@ class PlayerAPI:
     class _HighScoreBinary(Resource):
         def get(self):
             players = Player.query.all()
-            bhighscore = max(Player.bScore for player in players if player.bScore is not None)
-            return bhighscore
+            
+            # Sort players by cScore in descending order
+            sorted_players = sorted(players, key=lambda player: player.cbcore, reverse=True)
+            
+            high_scores = []
+            for i, player in enumerate(sorted_players[:3]):  # Get the top 3 high scorers
+                if player.bScore is not None:
+                    high_scores.append({
+                        'position': i + 1,
+                        'username': player.username,
+                        'highscore': player.bScore
+                    })
+            
+            return jsonify(high_scores)
     
     class _DeleteBinary(Resource):                     # This resource aims to delete a gpa row in the db
         def delete(self):
@@ -175,8 +187,20 @@ class PlayerAPI:
     class _HighScoreGuess(Resource):
         def get(self):
             players = Player.query.all()
-            ghighscore = max(Player.gScore for player in players if player.gScore is not None)
-            return ghighscore
+            
+            # Sort players by cScore in descending order
+            sorted_players = sorted(players, key=lambda player: player.gbcore, reverse=True)
+            
+            high_scores = []
+            for i, player in enumerate(sorted_players[:3]):  # Get the top 3 high scorers
+                if player.gScore is not None:
+                    high_scores.append({
+                        'position': i + 1,
+                        'username': player.username,
+                        'highscore': player.gScore
+                    })
+            
+            return jsonify(high_scores)
     
     class _DeleteGuess(Resource):                     # This resource aims to delete a gpa row in the db
         def delete(self):
