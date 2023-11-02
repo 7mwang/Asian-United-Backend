@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from flask_restful import Api, Resource # used for REST API building
 from model.playerz import Player
 from model.playerz import CookieClicker
@@ -44,7 +44,7 @@ class PlayerAPI:
             # validate name
             username = body.get('username')
             if username is None or len(username) < 2:
-                return {'message': f'Username is missing, or is less than 2 characters'}, 210
+                return {'message': f'Username is missing, or is less than 2 characters'}, 400
             
             po = Player(username=username)
 
@@ -53,14 +53,21 @@ class PlayerAPI:
             if player:
                 return jsonify(player.read())
             #Failure returns error
-            return {'message': f'Processed {username}, either a format error or duplicate'}, 210
+            return {'message': f'Processed {username}, either a format error or duplicate'}, 400
     
-    class _Authenticate(Resource):                  # Authenticates an user by checking the backend
+    class _Authenticate(Resource):
         def post(self):
-            body = request.get_json()               # grab info from frontend
+            body = request.get_json()
             username = body.get('username')
-            if len(username) < 1:
-                return {'message': f'Invalid username'}, 210
+            password = body.get('password')
+
+            # Authenticate the user, e.g., by checking their credentials in the database
+            user = findPlayer(username)
+            
+            if user and user.check_password(password):
+                return {'message': 'Authentication successful'}
+            else:
+                return {'message': 'Authentication failed'}, 401  # Use proper HTTP status code for unauthorized
 
     class _Read(Resource):
         def get(self):
@@ -77,8 +84,20 @@ class PlayerAPI:
     class _HighScoreCookie(Resource):
         def get(self):
             players = Player.query.all()
-            chighscore = max(Player.cScore for player in players if player.cScore is not None)
-            return chighscore
+            
+            # Sort players by cScore in descending order
+            sorted_players = sorted(players, key=lambda player: player.cScore, reverse=True)
+            
+            high_scores = []
+            for i, player in enumerate(sorted_players[:3]):  # Get the top 3 high scorers
+                if player.cScore is not None:
+                    high_scores.append({
+                        'position': i + 1,
+                        'username': player.username,
+                        'highscore': player.cScore
+                    })
+            
+            return jsonify(high_scores)
     
     class _DeleteCookie(Resource):                     # This resource aims to delete a gpa row in the db
         def delete(self):
@@ -88,13 +107,13 @@ class PlayerAPI:
             if player:                                # Check if user exists
                 player.delete()                       # call delete
             else:                                   # if user does not exist
-                return {'message': f"unable to find GPA entries of user '{username}'"}, 210
+                return {'message': f"unable to find Cookie Clicker entries of user '{username}'"}, 404
             return player.read()
     
     class _UpdateCookie(Resource):
         def post(self):
             body = request.get_json()
-            username = body.get(username)
+            username = body.get('username')
             ccScore = int(body.get('cScore'))
             cCost = int(body.get('cCost'))
             cCount = int(body.get('cCount'))
@@ -108,7 +127,7 @@ class PlayerAPI:
             if player:
                 player.update(ccScore, cCost, cCount, dbCost, dbCount, pCount, rCost, rate)
             else:
-                return {'message': f"unable to find Cookie Clicker entries of user '{username}'"}, 210     # error msg
+                return {'message': f"unable to find Cookie Clicker entries of user '{username}'"}, 404     # error msg
             return player.read()
     
     class _ScoreBinary(Resource):
@@ -131,20 +150,20 @@ class PlayerAPI:
             if player:                                # Check if user exists
                 player.delete()                       # call delete
             else:                                   # if user does not exist
-                return {'message': f"unable to find Binary Game entries of user '{username}'"}, 210
+                return {'message': f"unable to find Binary Game entries of user '{username}'"}, 404
             return player.read()
     
     class _UpdateBinary(Resource):
         def post(self):
             body = request.get_json()
-            username = body.get(username)
+            username = body.get('username')
             bScore = int(body.get('bScore'))
 
             player = binarygame_obj_by_username(username)
             if player:
                 player.update(bScore)
             else:
-                return {'message': f"unable to find Binary Game entries of user '{username}'"}, 210     # error msg
+                return {'message': f"unable to find Binary Game entries of user '{username}'"}, 404    # error msg
             return player.read()
     
     class _ScoreGuess(Resource):
@@ -167,20 +186,20 @@ class PlayerAPI:
             if player:                                # Check if user exists
                 player.delete()                       # call delete
             else:                                   # if user does not exist
-                return {'message': f"unable to find Guess Game entries of user '{username}'"}, 210
+                return {'message': f"unable to find Guess Game entries of user '{username}'"}, 404
             return player.read()
     
     class _UpdateGuess(Resource):
         def post(self):
             body = request.get_json()
-            username = body.get(username)
+            username = body.get('username')
             gScore = int(body.get('gScore'))
 
             player = guessgame_obj_by_username(username)
             if player:
                 player.update(gScore)
             else:
-                return {'message': f"unable to find Guess Game entries of user '{username}'"}, 210     # error msg
+                return {'message': f"unable to find Guess Game entries of user '{username}'"}, 404     # error msg
             return player.read()
         
     api.add_resource(_Create, '/create')
