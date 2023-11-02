@@ -111,7 +111,7 @@ class PlayerAPI:
                 return {'message': f"unable to find Cookie Clicker entries of user '{username}'"}, 210     # error msg
             return player.read()
     
-    class _ScoreBiinary(Resource):
+    class _ScoreBinary(Resource):
         def get(self):
             players = Player.query.all()
             cscore = [Player.bScore for player in players]
@@ -188,7 +188,16 @@ class PlayerAPI:
     api.add_resource(_Read, '/')
     api.add_resource(_ScoreCookie, '/cookie')
     api.add_resource(_HighScoreCookie, '/highcookie')
-    
+    api.add_resource(_DeleteCookie, '/cookie/delete')
+    api.add_resource(_UpdateCookie, '/cookie/update')
+    api.add_resource(_ScoreBinary, '/binary')
+    api.add_resource(_HighScoreBinary, '/highbinary')
+    api.add_resource(_DeleteBinary, '/binary/delete')
+    api.add_resource(_UpdateBinary, '/binary/update')
+    api.add_resource(_ScoreGuess, '/guess')
+    api.add_resource(_HighScoreGuess, '/highguess')
+    api.add_resource(_DeleteGuess, '/guess/delete')
+    api.add_resource(_UpdateGuess, '/guess/update')
 
 
 
