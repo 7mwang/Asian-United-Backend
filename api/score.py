@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from flask_restful import Api, Resource
 
 score_api = Blueprint("score_api", __name__, url_prefix="/api/scores")
@@ -11,21 +11,27 @@ game_scores = []
 user_data = {}
 
 class ScoreAPI(Resource):
-    def get(self):
-        return jsonify()
-
     def post(self):
         data = request.get_json()
-        score = data.get('score')
+        username = data.get('username')
+        new_score = data.get('score')
 
-        if score is not None and isinstance(score, int):
-            game_scores.append(score)
-            return jsonify(message='Score stored successfully'), 201
+        # Check if the user already exists in the data store
+        user = next((user for user in game_scores if user['username'] == username), None)
+
+        if user:
+            # If the user exists, update their score
+            user['score'] = new_score
+            return make_response(jsonify(message='Score updated successfully'), 200)
         else:
-            return jsonify(error='Invalid score format'), 400
-
+            # If the user doesn't exist, create a new user entry
+            game_scores.append({'username': username, 'score': new_score})
+            return make_response(jsonify(message='New user created with score'), 201)
+    def get(self):
+        sorted_scores = sorted(game_scores, key=lambda x: x['score'], reverse=True)
+        top_10_scores = sorted_scores[:10]
+        return make_response(jsonify(top_10_scores), 201)
 api.add_resource(ScoreAPI, '/')
-
 class UserDataAPI(Resource):
     def get(self, user_id):
         if user_id in user_data:
@@ -56,7 +62,7 @@ class UserDataAPI(Resource):
             'dbCost': data.get('dbCost', 1500),
             'plusCount': data.get('plusCount', 0),
         }
-        return jsonify(message='User data stored successfully'), 201
+        return make_response(jsonify(message='User data stored successfully'), 201)
 
 
 api.add_resource(UserDataAPI, '/users/<string:user_id>/')
