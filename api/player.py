@@ -182,7 +182,13 @@ class PlayerAPI:
             else:
                 return {'message': f"unable to find Guess Game entries of user '{username}'"}, 210     # error msg
             return player.read()
-
+        
+    api.add_resource(_Create, '/create')
+    api.add_resource(_Authenticate, '/auth')
+    api.add_resource(_Read, '/')
+    api.add_resource(_ScoreCookie, '/cookie')
+    api.add_resource(_HighScoreCookie, '/highcookie')
+    
 
 
 
