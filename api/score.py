@@ -45,6 +45,7 @@ class UserDataAPI(Resource):
 
     def post(self, user_id):
         data = request.get_json()
+
         user_data[user_id] = {
             'count': data.get('count', 0),
             'rate': data.get('rate', 1),
