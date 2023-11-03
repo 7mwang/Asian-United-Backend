@@ -2,6 +2,7 @@ import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
+# Define a class for CookieClicker table
 class CookieClicker(db.Model):
     __tablename__ = 'cookieclicker'
     #Define Class Schema
@@ -16,6 +17,7 @@ class CookieClicker(db.Model):
     rCost = db.Column(db.Integer, unique=False)
     rate = db.Column(db.Integer, unique=False)
 
+    # Constructor to initialize the object
     def __init__(self, id, ccScore, cCost, cCount, dbCost, dbCount, pCount, rCost, rate):
         self.playerID = id
         self.cScore = ccScore
@@ -27,10 +29,11 @@ class CookieClicker(db.Model):
         self.rCost = rCost
         self.rate = rate
 
-    
+    # String representation of the object
     def __repr__(self):
         return "CookieClicker(" + str(self.playerID) + "," + str(self.cScore) + "," + str(self.cCost) + "," + str(self.cCount) + "," + str(self.dbCost) + "," + str(self.dbCount) + "," + str(self.pCount) + "," + str(self.rCost) + "," + str(self.rate) + ")"
     
+    # Method to create a record in the table
     def create(self):
         try:
             # creates a Notes object from Notes(db.Model) class, passes initializers
@@ -41,6 +44,7 @@ class CookieClicker(db.Model):
             db.session.remove()
             return None
     
+    # Method to read the object's data
     def read(self):
         return {
             "playerID": self.playerID,
@@ -54,6 +58,7 @@ class CookieClicker(db.Model):
             "rate": self.rate
         }
     
+    # Method to update the object's data
     def update(self, ccScore, cCost, cCount, dbCost, dbCount, pCount, rCost, rate):
         #Convvert values into integers
         ccScore = int(ccScore)
@@ -70,8 +75,6 @@ class CookieClicker(db.Model):
             self.cScore = ccScore
         if cCost > self.cCost:
             self.cCost = cCost
-        if cCount > self.cCount:
-            self.cCount = cCount
         if dbCost > self.dbCost:
             self.dbCost = dbCost
         if dbCount > self.dbCount:
@@ -82,6 +85,7 @@ class CookieClicker(db.Model):
             self.rCost = rCost
         if rate > self.rate:
             self.rate = rate
+        self.cCount = cCount
 
 class BinaryGame(db.Model):
     __tablename__ = 'binarygame'

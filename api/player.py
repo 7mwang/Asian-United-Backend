@@ -5,12 +5,14 @@ from model.playerz import CookieClicker
 from model.playerz import BinaryGame
 from model.playerz import GuessGame
 
+# Create a Flask Blueprint for the player API with a URL prefix
 player_api = Blueprint('player_api', __name__,
                    url_prefix='/api/players')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
 api = Api(player_api)
 
+# Define helper functions to find objects in the database by username
 def cookieclicker_obj_by_username(username):
     """finds User in table matching username """
     id = Player.query.filter_by(_username=username).first().id
@@ -34,7 +36,9 @@ def findPlayer(username):
     player = Player.query.filter_by(_username=username).first()
     return player
 
+# Create a class for the Player API
 class PlayerAPI:
+    # Nested class for creating a new player
     class _Create(Resource):
         def post(self):
             ''' Read data for json body '''
@@ -55,6 +59,7 @@ class PlayerAPI:
             #Failure returns error
             return {'message': f'Processed {username}, either a format error or duplicate'}, 400
     
+    # Nested class for authenticating a player
     class _Authenticate(Resource):
         def post(self):
             body = request.get_json()
@@ -99,7 +104,7 @@ class PlayerAPI:
             
             return jsonify(high_scores)
     
-    class _DeleteCookie(Resource):                     # This resource aims to delete a gpa row in the db
+    class _DeleteCookie(Resource):               
         def delete(self):
             body = request.get_json()               # We grab our body
             username = body.get('username')         # Get the username of the user from the cookie, will process in frontend
@@ -202,7 +207,7 @@ class PlayerAPI:
             
             return jsonify(high_scores)
     
-    class _DeleteGuess(Resource):                     # This resource aims to delete a gpa row in the db
+    class _DeleteGuess(Resource):                     
         def delete(self):
             body = request.get_json()               # We grab our body
             username = body.get('username')         # Get the username of the user from the cookie, will process in frontend
