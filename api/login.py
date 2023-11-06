@@ -14,7 +14,6 @@ login_api = Blueprint("login_api", __name__, url_prefix="/api/login")
 api = Api(login_api)
 
 # ...
-users = []
 class UserRegistration(Resource):
     def post(self):
         data = request.get_json()

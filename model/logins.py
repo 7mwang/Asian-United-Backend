@@ -12,13 +12,10 @@ db_file_path = os.path.join(instance_directory, 'volumes', 'login.db')
 conn = sqlite3.connect(db_file_path)
 
 cursor = conn.cursor()
-conn = sqlite3.connect(db_file_path)
-cursor = conn.cursor()
 
 # Create a table for user login data
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         password TEXT NOT NULL
     )
