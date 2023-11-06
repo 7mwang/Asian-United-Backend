@@ -37,7 +37,7 @@ class UserRegistration(Resource):
             return make_response(jsonify(error='Username is already taken'), 409)
 
         hashed_password = generate_password_hash(password)
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hashed_password))
+        cursor.execute('''INSERT INTO users(username, password) VALUES(?, ?)''', (username, hashed_password))
         conn.commit()
         conn.close()
 

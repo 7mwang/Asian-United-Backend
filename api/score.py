@@ -52,7 +52,7 @@ class ScoreAPI(Resource):
             cursor.execute('UPDATE game_scores SET score = ? WHERE username = ?', (new_score, username))
         else:
             # If the user doesn't exist, create a new user entry
-            cursor.execute('INSERT INTO game_scores (username, score) VALUES (?, ?)', (username, new_score))
+            cursor.execute('INSERT INTO game_scores(username, score) VALUES(?, ?)', (username, new_score))
 
         # Commit changes and close the database connection
         conn.commit()
