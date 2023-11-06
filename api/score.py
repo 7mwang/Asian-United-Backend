@@ -18,33 +18,48 @@ game_scores = []
 # Dictionary to store user-specific data
 user_data = {}
 
+import sqlite3
+from flask import Blueprint, request, jsonify, make_response
+from flask_restful import Resource, Api
+import os
+
+# Get the absolute path to the 'instance' directory
+instance_directory = os.path.abspath('instance')
+
+# Specify the absolute path to the database file
+db_file_path = os.path.join(instance_directory, 'volumes', 'scores.db')
+
+# Connect to the database using the absolute path
+score_api = Blueprint("score_api", __name__, url_prefix="/api/scores")
+api = Api(score_api)
+
 class ScoreAPI(Resource):
-    class ScoreAPI(Resource):
-        def post(self):
-            data = request.get_json()
-            username = data.get('username')
-            new_score = data.get('score')
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        new_score = data.get('score')
 
-            # Connect to the database
-            conn = sqlite3.connect(db_file_path)
-            cursor = conn.cursor()
+        # Connect to the database
+        conn = sqlite3.connect(db_file_path)
+        cursor = conn.cursor()
 
-            # Check if the user already exists in the database
-            cursor.execute('SELECT * FROM game_scores WHERE username = ?', (username,))
-            user = cursor.fetchone()
+        # Check if the user already exists in the database
+        cursor.execute('SELECT * FROM game_scores WHERE username = ?', (username,))
+        user = cursor.fetchone()
 
-            if user:
-                # If the user exists, update their score
-                cursor.execute('UPDATE game_scores SET score = ? WHERE username = ?', (new_score, username))
-            else:
-                # If the user doesn't exist, create a new user entry
-                cursor.execute('INSERT INTO game_scores (username, score) VALUES (?, ?)', (username, new_score))
+        if user:
+            # If the user exists, update their score
+            cursor.execute('UPDATE game_scores SET score = ? WHERE username = ?', (new_score, username))
+        else:
+            # If the user doesn't exist, create a new user entry
+            cursor.execute('INSERT INTO game_scores (username, score) VALUES (?, ?)', (username, new_score))
 
-            # Commit changes and close the database connection
-            conn.commit()
-            conn.close()
+        # Commit changes and close the database connection
+        conn.commit()
+        conn.close()
 
-            return make_response(jsonify(message='Score updated successfully'), 200)
+        return make_response(jsonify(message='Score updated successfully'), 200)
+
     def get(self):
         # Connect to the database
         conn = sqlite3.connect(db_file_path)
@@ -61,6 +76,7 @@ class ScoreAPI(Resource):
         top_scores_data = [{'username': row[0], 'score': row[1]} for row in top_10_scores]
 
         return make_response(jsonify(top_scores_data), 200)
+
 api.add_resource(ScoreAPI, '/')
 
 class UserDataAPI(Resource):

@@ -8,7 +8,7 @@ instance_directory = os.path.abspath('instance')
 
 # Specify the absolute path to the database file
 db_file_path = os.path.join(instance_directory, 'volumes', 'scores.db')
-
+print(db_file_path)
 # Connect to the database using the absolute path
 login_api = Blueprint("login_api", __name__, url_prefix="/api/login")
 api = Api(login_api)
